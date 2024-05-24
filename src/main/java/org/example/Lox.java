@@ -8,7 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class Lox {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         if(args.length > 1){
             System.out.println("Usage: jlox [script]");
@@ -20,6 +20,7 @@ public class Lox {
         }
 
     }
+
     private static void runFile(String path) throws IOException {
         byte[] bytes= Files.readAllBytes(Paths.get(path));
         run(new String(bytes, Charset.defaultCharset()));
@@ -35,6 +36,11 @@ public class Lox {
             if (line == null) break;
             run(line);
         }
+    }
+
+    private static void run(String source){
+        Scanner scanner = new Scanner(source);
+        List<Token> tokens = scanner.scanTokens();
     }
 
 }
