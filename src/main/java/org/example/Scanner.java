@@ -47,4 +47,17 @@ public class Scanner {
         }
     }
 
+    private char advance(){
+        return source.charAt(current++);
+    }
+
+    private void addToken(TokenType tokenType){
+        addToken(tokenType,null);
+    }
+
+    private void addToken(TokenType tokenType,Object literal){
+        String text=source.substring(start,current);
+        tokens.add(new Token(tokenType,text,literal,line));
+    }
+
 }
