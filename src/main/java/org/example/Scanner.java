@@ -71,18 +71,39 @@ public class Scanner {
             case '\n':
                 line++;
                 break;
-
+            case '"':
+                string();
+                break;
             default:
                 JBox.error(line, "Unexpected character.");
                 break;
         }
     }
 
-    private char peek(){
-        if(isAtEnd()) return '\0';
-        return source.charAt(current);
+    private void string(){
+        while (peek()!='"' && !isAtEnd()){
+            if(peek() == '\n') line++;
+            System.out.println(source.charAt(current));
+            advance();
+        }
+        if (isAtEnd()) {
+            JBox.error(line, "Unterminated string.");
+            return;
+        }
+        advance();
+        String value = source.substring(start+1 , current-1);
+        addToken(STRING, value);
     }
 
+    private char advance(){
+        return source.charAt(current++);
+    }
+
+    private char peek(){
+        if(isAtEnd()) return '\0';
+
+        return source.charAt(current);
+    }
     private boolean match(char expected){
         if (isAtEnd()) return false;
         if (source.charAt(current) != expected) return false;
@@ -91,9 +112,6 @@ public class Scanner {
         return true;
     }
 
-    private char advance(){
-        return source.charAt(current++);
-    }
 
     private void addToken(TokenType tokenType){
         addToken(tokenType,null);
