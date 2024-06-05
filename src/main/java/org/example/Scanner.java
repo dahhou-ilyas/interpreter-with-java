@@ -95,14 +95,36 @@ public class Scanner {
                 string();
                 break;
             default:
-                JBox.error(line, "Unexpected character.");
+                if(isDigit(c)){
+                    number();
+                }else {
+                    JBox.error(line, "Unexpected character.");
+                }
                 break;
         }
     }
 
+    private boolean isDigit(char c){
+        if(c>='0' && c<='9'){
+            return true;
+        }
+        return false;
+    }
+
+    private void number(){
+        while (isDigit(peek())) advance();
+
+        if (peek()=='.' && isDigit(peekNext())){
+            advance();
+            while (isDigit(peek())) advance();
+        }
+        addToken(NUMBER,Double.parseDouble(source.substring(start,current)));
+    }
+
     private void string(){
+
         while (peek()!='"' && !isAtEnd()){
-            if(peek() == '\n') line++;
+            if(peek() == '\n') line++; //interdire les multiligne est plus complexe que l'autorisé hhhhhhh
             System.out.println(source.charAt(current));
             advance();
         }
