@@ -63,6 +63,15 @@ public class Scanner {
                 }else {
                     addToken(SLASH);
                 }
+                break;
+            case ' ':
+            case '\r':
+            case '\t':
+                break;
+            case '\n':
+                line++;
+                break;
+
             default:
                 JBox.error(line, "Unexpected character.");
                 break;
