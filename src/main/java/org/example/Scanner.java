@@ -56,10 +56,22 @@ public class Scanner {
             case '>':
                 addToken(match('=') ? GREATER_EQUAL : GREATER);
                 break;
+            case '/':
+                if(match('/')){
+                    // on a ajouté !isAtEnd pour evité le out of range exception !
+                    while (peek() != '\n' && !isAtEnd()) advance();
+                }else {
+                    addToken(SLASH);
+                }
             default:
                 JBox.error(line, "Unexpected character.");
                 break;
         }
+    }
+
+    private char peek(){
+        if(isAtEnd()) return '\0';
+        return source.charAt(current);
     }
 
     private boolean match(char expected){
