@@ -60,7 +60,27 @@ public class Scanner {
                 if(match('/')){
                     // on a ajouté !isAtEnd pour evité le out of range exception !
                     while (peek() != '\n' && !isAtEnd()) advance();
-                }else {
+                } else if (match('*')) {
+
+                    boolean isEndOfComment=false;
+
+                    while (!isEndOfComment && !isAtEnd()){
+
+                        char cc=advance();
+
+                        if(cc=='\n'){
+                            line++;
+                        }
+                        if(cc=='*' && peek()=='/'){
+                            isEndOfComment=true;
+                            advance();
+                        }
+                    }
+                    if(isAtEnd() && !isEndOfComment){
+                        JBox.error(line, "Unterminated comment.");
+                        return;
+                    }
+                } else {
                     addToken(SLASH);
                 }
                 break;
@@ -90,7 +110,7 @@ public class Scanner {
             JBox.error(line, "Unterminated string.");
             return;
         }
-        advance();
+        advance(); // return " end of string et incrimenter current
         String value = source.substring(start+1 , current-1);
         addToken(STRING, value);
     }
