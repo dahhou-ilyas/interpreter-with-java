@@ -57,7 +57,7 @@ public class Scanner {
                 addToken(match('=') ? GREATER_EQUAL : GREATER);
                 break;
             default:
-                Lox.error(line, "Unexpected character.");
+                JBox.error(line, "Unexpected character.");
                 break;
         }
     }
