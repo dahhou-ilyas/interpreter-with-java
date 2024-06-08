@@ -1,4 +1,4 @@
-package org.example;
+package org.jbox;
 
 enum TokenType {
     // single charachter tocken

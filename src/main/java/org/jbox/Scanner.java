@@ -1,11 +1,11 @@
-package org.example;
+package org.jbox;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.example.TokenType.*;
+import static org.jbox.TokenType.*;
 public class Scanner {
 
     private int start = 0;
@@ -134,7 +134,7 @@ public class Scanner {
         while (isAlphaNumeric(peek())) advance();
         String text =source.substring(start,current);
         TokenType type = keywords.get(text);
-        if (type == null) type =IDENTIFIER;
+        if (type == null) type = IDENTIFIER;
         addToken(type);
     }
 

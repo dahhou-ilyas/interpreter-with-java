@@ -1,4 +1,4 @@
-package org.example;
+package org.jbox;
 
 public class Token {
     final TokenType type;
