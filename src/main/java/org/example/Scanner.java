@@ -97,11 +97,28 @@ public class Scanner {
             default:
                 if(isDigit(c)){
                     number();
-                }else {
+                } else if (isAlpha(c)) {
+                    identifier();
+                } else {
                     JBox.error(line, "Unexpected character.");
                 }
                 break;
         }
+    }
+
+    public void identifier(){
+        while (isAlphaNumeric(peek())) advance();
+
+        addToken(IDENTIFIER);
+    }
+
+    public boolean isAlpha(char c){
+        return (c >= 'a' && c<= 'z') ||
+                (c >= 'A' && c<= 'Z') ||
+                c == '_';
+    }
+    private boolean isAlphaNumeric(char c){
+        return isAlpha(c) || isDigit(c);
     }
 
     private boolean isDigit(char c){
@@ -113,13 +130,14 @@ public class Scanner {
 
     private void number(){
         while (isDigit(peek())) advance();
-
         if (peek()=='.' && isDigit(peekNext())){
             advance();
             while (isDigit(peek())) advance();
         }
         addToken(NUMBER,Double.parseDouble(source.substring(start,current)));
     }
+    //public static double parseDouble(String lexeme) throws NumberFormatException
+    // par la suite je crée mois meme cette méthode qui permet de transferer un lexem en double sans utilisation de la double de java
 
     private char peekNext(){
         if(current + 1 >= source.length()) return '\0';
@@ -130,7 +148,6 @@ public class Scanner {
 
         while (peek()!='"' && !isAtEnd()){
             if(peek() == '\n') line++; //interdire les multiligne est plus complexe que l'autorisé hhhhhhh
-            System.out.println(source.charAt(current));
             advance();
         }
         if (isAtEnd()) {
