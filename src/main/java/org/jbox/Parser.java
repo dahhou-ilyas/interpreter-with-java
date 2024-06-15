@@ -15,6 +15,8 @@ import java.util.List;
                    | "(" expression ")" ;
  */
 
+import static org.jbox.TokenType.*;
+
 public class Parser {
     private final List<Token> tokens;
     private int current = 0;
@@ -56,5 +58,17 @@ public class Parser {
     private Token advance(){
         if (!isAtEnd()) current++;
         return previous();
+    }
+
+    private boolean isAtEnd(){
+        return peek().type==EOF;
+    }
+
+    private Token peek(){
+        return tokens.get(current);
+    }
+
+    private Token previous(){
+        return tokens.get(current-1);
     }
 }
