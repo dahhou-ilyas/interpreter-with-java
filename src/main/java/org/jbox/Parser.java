@@ -1,5 +1,6 @@
 package org.jbox;
 
+import java.rmi.server.ExportException;
 import java.util.List;
 
 // we are amplement this grammar
@@ -48,6 +49,26 @@ public class Parser {
             expr = new Expr.Binary(expr,operatore,right) ;
         }
         return expr ;
+    }
+
+    private Expr term(){
+        Expr expr = factor();
+        while (match(MINUS,PLUS)){
+            Token operateur =previous();
+            Expr right=factor();
+            expr=new Expr.Binary(expr,operateur,right);
+        }
+        return expr;
+    }
+
+    private Expr factor(){
+        Expr expr= unary();
+        while (match(SLASH,STAR)){
+            Token operateur = previous();
+            Expr right=unary();
+            expr =new Expr.Binary(expr,operateur,right);
+        }
+        return expr;
     }
 
     private boolean match(TokenType... types){
