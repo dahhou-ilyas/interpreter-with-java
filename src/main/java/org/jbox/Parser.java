@@ -54,9 +54,9 @@ public class Parser {
     private Expr term(){
         Expr expr = factor();
         while (match(MINUS,PLUS)){
-            Token operateur =previous();
+            Token operatore =previous();
             Expr right=factor();
-            expr=new Expr.Binary(expr,operateur,right);
+            expr=new Expr.Binary(expr,operatore,right);
         }
         return expr;
     }
@@ -64,11 +64,20 @@ public class Parser {
     private Expr factor(){
         Expr expr= unary();
         while (match(SLASH,STAR)){
-            Token operateur = previous();
+            Token operatore = previous();
             Expr right=unary();
-            expr =new Expr.Binary(expr,operateur,right);
+            expr =new Expr.Binary(expr,operatore,right);
         }
         return expr;
+    }
+
+    private Expr unary(){
+        if (match(MINUS,BANG)){
+            Token operatore=previous();
+            Expr right= unary();
+            return new Expr.Unary(operatore,right);
+        }
+        return primary();
     }
 
     private boolean match(TokenType... types){
