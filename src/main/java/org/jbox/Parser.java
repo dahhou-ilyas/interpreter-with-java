@@ -40,7 +40,17 @@ public class Parser {
         return expr;
     }
 
-    private boolean math(TokenType... types){
+    private Expr comparison(){
+        Expr expr = term() ;
+        while (match(GREATER, GREATER_EQUAL, LESS_EQUAL, LESS)) {
+            Token operatore =previous() ;
+            Expr right = term() ;
+            expr = new Expr.Binary(expr,operatore,right) ;
+        }
+        return expr ;
+    }
+
+    private boolean match(TokenType... types){
         for (TokenType type:types){
             if(check(type)){
                 advance();
