@@ -3,6 +3,12 @@ package org.jbox;
 import java.rmi.server.ExportException;
 import java.util.List;
 
+// la logic en générale est de apartire de la liste des tokent qui vienne depuit le scannet on fait des analyse sur ces tocken (parsing)
+// et on test si il respect le grammaire qu'on a définit
+
+// pour faire ces travaille on fait une méthode qui s'appelle (un analyseur descendant )
+
+
 // we are amplement this grammar
 /*
     expression     → equality ;
