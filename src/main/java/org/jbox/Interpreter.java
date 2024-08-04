@@ -8,8 +8,20 @@ public class Interpreter implements Expr.Visitor<Object>{
         Object right=evaluate(expr.right);
 
         switch (expr.operator.type){
-            case MINUS :
+            case MINUS:
                 return (double) left - (double) right;
+            case PLUS:
+                if(left instanceof Double && right instanceof Double){
+                    return (double) left + (double) right;
+                }
+                if(left instanceof String && right instanceof String){
+                    return (String) left + (String) right;
+                }
+                //moi
+                if((left instanceof String || left instanceof Double) && (right instanceof String || right instanceof Double)){
+                    return (String) left + (String) right;
+                }
+                break;
             case SLASH:
                 return (double) left / (double) right;
             case STAR:
