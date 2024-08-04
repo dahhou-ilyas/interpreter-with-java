@@ -29,7 +29,7 @@ public class Interpreter implements Expr.Visitor<Object>{
                 }
                 //moi
                 if((left instanceof String || left instanceof Double) && (right instanceof String || right instanceof Double)){
-                    return (String) left + (String) right;
+                    return String.valueOf(left) + String.valueOf(right);
                 }
                 break;
             case SLASH:
