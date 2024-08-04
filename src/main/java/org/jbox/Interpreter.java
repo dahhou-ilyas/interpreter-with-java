@@ -4,6 +4,17 @@ public class Interpreter implements Expr.Visitor<Object>{
 
     @Override
     public Object visitBinaryExpr(Expr.Binary expr) {
+        Object left=evaluate(expr.left);
+        Object right=evaluate(expr.right);
+
+        switch (expr.operator.type){
+            case MINUS :
+                return (double) left - (double) right;
+            case SLASH:
+                return (double) left / (double) right;
+            case STAR:
+                return (double) left * (double) right;
+        }
         return null;
     }
 
