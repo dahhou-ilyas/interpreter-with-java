@@ -52,6 +52,10 @@ public class JBox {
         Expr expression = parser.parse();
         if (hadError) return;
         System.out.println(new AstPrinter().print(expression));
+        System.out.println("result ******************");
+        Interpreter interpreter=new Interpreter();
+        interpreter.interpret(expression);
+        System.out.println("result ******************");
     }
 
 

@@ -79,4 +79,9 @@ public class Interpreter implements Expr.Visitor<Object>{
 
         return left.equals(right);
     }
+
+    void interpret(Expr expr){
+        Object a= expr.accept(this);
+        System.out.println(a);
+    }
 }
