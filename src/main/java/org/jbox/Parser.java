@@ -25,6 +25,7 @@ import java.util.List;
 import static org.jbox.TokenType.*;
 
 public class Parser {
+    private static class ParseError extends RuntimeException {}
     private final List<Token> tokens;
     private int current = 0;
 
@@ -38,7 +39,6 @@ public class Parser {
 
     private Expr equality(){
         Expr expr= comparison();
-
         while (match(BANG_EQUAL, EQUAL_EQUAL)){
             Token operator = previous();
             Expr right = comparison();
@@ -100,6 +100,7 @@ public class Parser {
             consume(RIGHT_PAREN, "Expect ')' after expression.");
             return new Expr.Grouping(expr);
         }
+        return null;
     }
     private boolean match(TokenType... types){
         for (TokenType type:types){
@@ -109,6 +110,11 @@ public class Parser {
             }
         }
         return false;
+    }
+    private Token consume(TokenType type,String message){
+        if(check(type)) return  advance();
+
+        throw error(peek(), message);
     }
 
     private boolean check(TokenType type){
@@ -132,4 +138,11 @@ public class Parser {
     private Token previous(){
         return tokens.get(current-1);
     }
+
+    private ParseError error(Token token, String message) {
+        JBox.error(token, message);
+        return new ParseError();
+    }
+
+
 }
