@@ -9,7 +9,9 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class JBox {
+    private static final Interpreter interpreter = new Interpreter();
     static boolean hadError = false;
+    static boolean hadRuntimeError = false;
 
     public static void main(String[] args) throws IOException {
 
@@ -29,6 +31,7 @@ public class JBox {
         byte[] bytes= Files.readAllBytes(Paths.get(path));
         run(new String(bytes, Charset.defaultCharset()));
         if (hadError) System.exit(65);
+        if (hadRuntimeError) System.exit(70);
     }
 
 
@@ -51,11 +54,9 @@ public class JBox {
         Parser parser = new Parser(tokens);
         Expr expression = parser.parse();
         if (hadError) return;
-        System.out.println(new AstPrinter().print(expression));
-        System.out.println("result ******************");
-        Interpreter interpreter=new Interpreter();
+
         interpreter.interpret(expression);
-        System.out.println("result ******************");
+
     }
 
 
@@ -63,6 +64,11 @@ public class JBox {
         report(line,"",message);
     }
 
+    static void runtimeError(RuntimeError error){
+        System.err.println(error.getMessage()+
+                "\n[line "+error.token.line+"]");
+        hadRuntimeError=true;
+    }
     private static void report(int line,String where,String message){
         System.err.println(
                 "[line " + line + "] Error" + where + ": " + message);

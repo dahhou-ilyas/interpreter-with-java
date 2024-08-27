@@ -33,10 +33,10 @@ public class Interpreter implements Expr.Visitor<Object>{
                     return (String) left + (String) right;
                 }
                 //moi
-                if((left instanceof String || left instanceof Double) && (right instanceof String || right instanceof Double)){
+                /*if((left instanceof String || left instanceof Double) && (right instanceof String || right instanceof Double)){
                     return String.valueOf(left) + String.valueOf(right);
-                }
-                break;
+                }*/
+                throw new RuntimeError(expr.operator, "Operands must be two numbers or two strings.");
             case SLASH:
                 checkNumberOperands(expr.operator, left, right);
                 return (double) left / (double) right;
@@ -98,8 +98,28 @@ public class Interpreter implements Expr.Visitor<Object>{
         return left.equals(right);
     }
 
-    void interpret(Expr expr){
-        Object a= expr.accept(this);
-        System.out.println(a);
+    private String stringify(Object object) {
+        if (object == null) return "nil";
+
+        if (object instanceof Double) {
+            String text = object.toString();
+            if (text.endsWith(".0")) {
+                text = text.substring(0, text.length() - 2);
+            }
+            return text;
+        }
+
+        return object.toString();
     }
+
+    void interpret(Expr expr){
+        try {
+            Object value = evaluate(expr);
+            System.out.println(stringify(value));
+
+        }catch (RuntimeError error){
+            JBox.runtimeError(error);
+        }
+    }
+
 }

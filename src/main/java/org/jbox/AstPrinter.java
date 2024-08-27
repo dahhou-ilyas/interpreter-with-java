@@ -7,7 +7,6 @@ public class AstPrinter implements Expr.Visitor {
                 new Token(TokenType.STAR, "*", null, 1),
                 new Expr.Grouping(new Expr.Literal(45.67))
         );
-        System.out.println(new AstPrinter().print(expression));
     }
     @Override
     public Object visitBinaryExpr(Expr.Binary expr) {

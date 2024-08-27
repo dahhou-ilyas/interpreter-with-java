@@ -12,7 +12,6 @@ public class GenerateAst {
             System.exit(64);
         }
         String outputDir = args[0];
-        System.out.println(outputDir);
 
         defineAst(outputDir,"Expr", Arrays.asList(
                 "Binary   : Expr left, Token operator, Expr right",

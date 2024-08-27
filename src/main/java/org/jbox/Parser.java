@@ -46,7 +46,6 @@ public class Parser {
     }
 
     private Expr equality(){
-        System.out.println("equality ==>"+ peek());
         Expr expr= comparison();
         while (match(BANG_EQUAL, EQUAL_EQUAL)){
             Token operator = previous();
@@ -57,7 +56,6 @@ public class Parser {
     }
 
     private Expr comparison(){
-        System.out.println("comparison ==>"+ peek());
         Expr expr = term() ;
         while (match(GREATER, GREATER_EQUAL, LESS_EQUAL, LESS)) {
             Token operatore =previous() ;
@@ -68,7 +66,6 @@ public class Parser {
     }
 
     private Expr term(){
-        System.out.println("term ==>" + peek());
         Expr expr = factor();
         while (match(MINUS,PLUS)){
             Token operatore =previous();
@@ -79,7 +76,6 @@ public class Parser {
     }
 
     private Expr factor(){
-        System.out.println("factor ==>"+ peek());
         Expr expr= unary();
         while (match(SLASH,STAR)){
             Token operatore = previous();
@@ -90,7 +86,6 @@ public class Parser {
     }
 
     private Expr unary(){
-        System.out.println("unary ==>"+ peek());
         if (match(MINUS,BANG)){
             Token operatore=previous();
             Expr right= unary();
@@ -100,7 +95,6 @@ public class Parser {
     }
 
     private Expr primary(){
-        System.out.println("primary ==>"+ peek());
         if (match(FALSE)) return new Expr.Literal(false);
         if (match(TRUE)) return new Expr.Literal(true);
         if (match(NIL)) return new Expr.Literal(null);
