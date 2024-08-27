@@ -9,6 +9,8 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class JBox {
+    //We make the field static so that successive calls to run() inside a REPL session reuse the same interpreter.
+    //when the interpreter stores global variables. Those variables should persist throughout the REPL session.
     private static final Interpreter interpreter = new Interpreter();
     static boolean hadError = false;
     static boolean hadRuntimeError = false;
