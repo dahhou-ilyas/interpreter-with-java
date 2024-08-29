@@ -1,6 +1,7 @@
 package org.jbox;
 
 import java.rmi.server.ExportException;
+import java.util.ArrayList;
 import java.util.List;
 
 // la logic en générale est de apartire de la liste des tokent qui vienne depuit le scannet on fait des analyse sur ces tocken (parsing)
@@ -20,6 +21,15 @@ import java.util.List;
                    | primary ;
     primary        → NUMBER | STRING | "true" | "false" | "nil"
                    | "(" expression ")" ;
+
+-------------------------------------------------
+program        → statement* EOF ;
+
+statement      → exprStmt
+               | printStmt ;
+
+exprStmt       → expression ";" ;
+printStmt      → "print" expression ";" ;
  */
 
 import static org.jbox.TokenType.*;
@@ -33,16 +43,29 @@ public class Parser {
         this.tokens=tokens;
     }
 
-    Expr parse() {
+    //cela juste une cas particulé pour faire le calcule de expression arithmetique et de la opration boolaen
+    /*Expr parse() {
         try {
             return expression();
         } catch (ParseError error) {
             return null;
         }
-    }
+    }*/
 
+    List<Stmt> parse(){
+        List<Stmt> statements=new ArrayList<>();
+        while (!isAtEnd()){
+            statements.add(statement());
+        }
+        return statements;
+    }
     private Expr expression(){
         return equality();
+    }
+
+    private Stmt statement(){
+        if(match(PRINT)) return printStatement();
+        return expressionStatement();
     }
 
     private Expr equality(){
