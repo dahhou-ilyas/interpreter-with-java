@@ -74,6 +74,12 @@ public class Parser {
         return new Stmt.Print(value);
     }
 
+    // We wrap that Expr in a Stmt of the right type and return it.
+    private Stmt expressionStatement(){
+        Expr expression = expression();
+        consume(SEMICOLON,"Expect ';' after expression");
+        return new Stmt.Expression(expression);
+    }
     private Expr equality(){
         Expr expr= comparison();
         while (match(BANG_EQUAL, EQUAL_EQUAL)){
