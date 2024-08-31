@@ -46,6 +46,7 @@ public class JBox {
             String line = reader.readLine();
             if (line == null) break;
             run(line);
+            System.out.println();
             hadError = false;
         }
     }

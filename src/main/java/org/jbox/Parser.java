@@ -53,11 +53,15 @@ public class Parser {
     }*/
 
     List<Stmt> parse(){
-        List<Stmt> statements=new ArrayList<>();
-        while (!isAtEnd()){
-            statements.add(statement());
+        try {
+            List<Stmt> statements=new ArrayList<>();
+            while (!isAtEnd()){
+                statements.add(statement());
+            }
+            return statements;
+        }catch (ParseError parseError){
+            return null;
         }
-        return statements;
     }
     private Expr expression(){
         return equality();
