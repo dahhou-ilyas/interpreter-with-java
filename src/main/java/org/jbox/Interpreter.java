@@ -1,6 +1,8 @@
 package org.jbox;
 
-public class Interpreter implements Expr.Visitor<Object>{
+import java.util.List;
+
+public class Interpreter implements Expr.Visitor<Object>,Stmt.Visitor<Void>{
 
     @Override
     public Object visitBinaryExpr(Expr.Binary expr) {
@@ -84,6 +86,9 @@ public class Interpreter implements Expr.Visitor<Object>{
     private Object evaluate(Expr expr){
         return expr.accept(this);
     }
+    private void execute(Stmt stmt) {
+        stmt.accept(this);
+    }
 
     private boolean isTruthy(Object object){
         if(object == null) return false;
@@ -112,14 +117,26 @@ public class Interpreter implements Expr.Visitor<Object>{
         return object.toString();
     }
 
-    void interpret(Expr expr){
+    void interpret(List<Stmt> statements){
         try {
-            Object value = evaluate(expr);
-            System.out.println(stringify(value));
-
+            for (Stmt statement : statements) {
+                execute(statement);
+            }
         }catch (RuntimeError error){
             JBox.runtimeError(error);
         }
     }
 
+    @Override
+    public Void visitExpressionStmt(Stmt.Expression stmt) {
+        evaluate(stmt.expression);
+        return null;
+    }
+
+    @Override
+    public Void visitPrintStmt(Stmt.Print stmt) {
+        Object value=evaluate(stmt.expression);
+        System.out.println(stringify(value));
+        return null;
+    }
 }
