@@ -21,15 +21,20 @@ import java.util.List;
                    | primary ;
     primary        → NUMBER | STRING | "true" | "false" | "nil"
                    | "(" expression ")" ;
+                   | IDENTIFIER ;
 
 -------------------------------------------------
-program        → statement* EOF ;
+program        → declaration* EOF ;
+
+declaration    → varDecl
+               | statement ;
 
 statement      → exprStmt
                | printStmt ;
 
 exprStmt       → expression ";" ;
 printStmt      → "print" expression ";" ;
+varDecl        → "var" IDENTIFIER ( "=" expression )? ";" ;
  */
 
 import static org.jbox.TokenType.*;
@@ -56,7 +61,7 @@ public class Parser {
         try {
             List<Stmt> statements=new ArrayList<>();
             while (!isAtEnd()){
-                statements.add(statement());
+                statements.add(declaration());
             }
             return statements;
         }catch (ParseError parseError){
@@ -65,6 +70,17 @@ public class Parser {
     }
     private Expr expression(){
         return equality();
+    }
+
+    private Stmt declaration() {
+        try {
+            if (match(VAR)) return varDeclaration();
+
+            return statement();
+        } catch (ParseError error) {
+            synchronize();
+            return null;
+        }
     }
 
     private Stmt statement(){
