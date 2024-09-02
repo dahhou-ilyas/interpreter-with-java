@@ -2,6 +2,7 @@ package org.jbox;
 
 import java.util.List;
 
+//les noude de ast pour le stmst
 abstract class Stmt {
   interface Visitor<R> {
     R visitExpressionStmt(Expression stmt);
