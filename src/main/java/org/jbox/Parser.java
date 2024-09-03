@@ -12,7 +12,9 @@ import java.util.List;
 
 // we are amplement this grammar
 /*
-    expression     → equality ;
+    expression     → assignment ;
+    assignment     → IDENTIFIER "=" assignment
+                     | equality ;
     equality       → comparison ( ( "!=" | "==" ) comparison )* ;
     comparison     → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
     term           → factor ( ( "-" | "+" ) factor )* ;
