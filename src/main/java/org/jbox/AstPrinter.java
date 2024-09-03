@@ -8,6 +8,12 @@ public class AstPrinter implements Expr.Visitor {
                 new Expr.Grouping(new Expr.Literal(45.67))
         );
     }
+
+    @Override
+    public Object visitAssignExpr(Expr.Assign expr) {
+        return null;
+    }
+
     @Override
     public Object visitBinaryExpr(Expr.Binary expr) {
         return parenthesize(expr.operator.lexeme,expr.left,expr.right);
@@ -27,6 +33,11 @@ public class AstPrinter implements Expr.Visitor {
     @Override
     public Object visitUnaryExpr(Expr.Unary expr) {
         return parenthesize(expr.operator.lexeme,expr.right);
+    }
+
+    @Override
+    public Object visitVariableExpr(Expr.Variable expr) {
+        return null;
     }
 
     public String print(Expr expr){

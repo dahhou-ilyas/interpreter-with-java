@@ -14,7 +14,7 @@ import java.util.List;
 /*
     expression     → assignment ;
     assignment     → IDENTIFIER "=" assignment
-                     | equality ;
+                    | equality ;
     equality       → comparison ( ( "!=" | "==" ) comparison )* ;
     comparison     → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
     term           → factor ( ( "-" | "+" ) factor )* ;
@@ -71,7 +71,7 @@ public class Parser {
         }
     }
     private Expr expression(){
-        return equality();
+        return assignment();
     }
 
     private Stmt declaration() {
